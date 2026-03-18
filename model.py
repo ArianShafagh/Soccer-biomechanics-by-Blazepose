@@ -213,7 +213,7 @@ class Blazepose:
                     trunck_lean_angle = bio_result["alignment"]["trunk_lean_forward_deg"]
                     left_knee_valgus_proxy = bio_result["alignment"]["left_knee_valgus_proxy"]
                     right_knee_valgus_proxy = bio_result["alignment"]["right_knee_valgus_proxy"]
-                    trunk_side_lean_angle = bio_result["alignment"]["trunk_side_lean_deg"]
+                    trunk_side_lean_angle = bio_result["alignment"]["trunk_lean_side_deg"]
                     cv2.putText(annotated_image, f'Trunck forward lean angle: {trunck_lean_angle}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
                     cv2.putText(annotated_image, f'Trunck side lean angle: {trunk_side_lean_angle}', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
                     cv2.putText(annotated_image, f'left knee valgus proxy: {left_knee_valgus_proxy}', (10,90), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
