@@ -4,7 +4,7 @@
 
 <div align="center">
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python)
 ![MediaPipe](https://img.shields.io/badge/MediaPipe-BlazePose-orange?logo=google)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green?logo=opencv)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
