@@ -21,7 +21,8 @@ class Blazepose:
                  min_pose_presence_confidence=0.5, 
                  start_frame=0,
                  end_frame=None,
-                 show_biomechanical_data=True):
+                 show_biomechanical_data=True,
+                 video_output=True):
         
         if not os.path.isabs(model_path):
             model_path = os.path.abspath(model_path)
@@ -47,6 +48,7 @@ class Blazepose:
         self.start_frame = start_frame
         self.end_frame = end_frame
         self.show_biomechanical_data = show_biomechanical_data
+        self.video_output = video_output
         self.paused = False
 
     def get_landmark_coords_pixel(self, detection_result, landmark_index, image_width, image_height):
@@ -171,7 +173,8 @@ class Blazepose:
 
     def run(self):
         cap = cv2.VideoCapture(self.video_path)
-        output_video = self.save_annotated_video(cap)
+        if self.video_output:
+            output_video = self.save_annotated_video(cap)
         print("Starting video processing...")
         if self.start_frame > 0:
             cap.set(cv2.CAP_PROP_POS_FRAMES, self.start_frame)
@@ -200,7 +203,8 @@ class Blazepose:
                 annotated_image = self.draw_landmarks_on_image(frame, detection_result.pose_landmarks)
 
                 # save the annotated video
-                output_video.write(annotated_image)
+                if self.video_output:
+                    output_video.write(annotated_image)
 
                 # Extract and save biomechanical analysis results
                 bio_result = BiomechanicalModel(landmarks_world).analyze()
@@ -242,7 +246,8 @@ class Blazepose:
         total_time = time.time() - start_time
         print(f"Total processing time: {total_time:.2f} seconds and avg fps is :{self.frame_idx/total_time:.2f}")        
         cap.release()
-        output_video.release()
+        if self.video_output:
+            output_video.release()
         cv2.destroyAllWindows()
 
         self.save_all_data()

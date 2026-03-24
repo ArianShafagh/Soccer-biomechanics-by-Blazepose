@@ -13,6 +13,7 @@ class Loader:
         self.start_frame = cfg.get("start_frame", 0)
         self.end_frame = cfg.get("end_frame", None)
         self.show_biomechanical_data = cfg.get("show_biomechanical_data", True)
+        self.video_output = cfg.get("video_output", True)
 
     #load the data from the config file and return it as a tuple
     
@@ -27,5 +28,6 @@ class Loader:
             self.min_pose_presence_confidence,          #minimum pose presence confidence(default 0.5)
             self.start_frame,                           #start frame(default 0)
             self.end_frame,                             #end frame(default None)
-            self.show_biomechanical_data                #show biomechanical data (default True)
+            self.show_biomechanical_data,               #show biomechanical data (default True)
+            self.video_output                            #video output (default True)
         )

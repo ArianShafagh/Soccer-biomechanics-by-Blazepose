@@ -1,4 +1,5 @@
 {
+
     "model_path": ".\\BlazeModels\\pose_landmarker_lite.task",
     "video_path": ".\\Video\\soccerTest.mp4",
     "output_segmentation_masks": false,
@@ -7,5 +8,6 @@
     "min_pose_presence_confidence": 0.5,
     "start_frame": 0,                          
     "end_frame": null,                         
-    "show_biomechanical_data": true          
+    "show_biomechanical_data": true,    
+    "video_output": true
 }

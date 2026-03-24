@@ -55,7 +55,6 @@ class BiomechanicalModel:
             "angles": {},
             "symmetry": {},
             "alignment": {},
-            "tracking_point": {}
         }
 
     def calculate_angle(self, h, k, a):
@@ -67,6 +66,9 @@ class BiomechanicalModel:
 
         '''
         h,k,a = np.array(h), np.array(k), np.array(a)
+
+        if None in h or None in k or None in a:
+            return None  # If any of the points are missing, return None
 
         # Create Vectors originating from the middle point (k)
         hk = h - k
@@ -94,6 +96,8 @@ class BiomechanicalModel:
         < 0 : Knee is to the LEFT of the line (Valgus/Knock-kneed for Left Leg)
         0   : Perfect Alignment
         """
+        if None in h or None in k or None in a:
+            return None  
         h_x, h_y = h[0], h[1]
         k_x, k_y = k[0], k[1]
         a_x, a_y = a[0], a[1]
