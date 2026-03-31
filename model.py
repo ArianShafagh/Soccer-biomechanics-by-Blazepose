@@ -172,6 +172,12 @@ class Blazepose:
         return {'x': pixel_tracking_x, 'y': pixel_tracking_y}
 
     def run(self):
+        frame_processed = 0
+        pause_time = 0
+        pause_time_array = []
+        annotated_image = None
+        image_width = 0
+        image_height = 0
         cap = cv2.VideoCapture(self.video_path)
         if self.video_output:
             output_video = self.save_annotated_video(cap)
@@ -198,7 +204,7 @@ class Blazepose:
                 landmarks_world = self.extract_landmarks_world(detection_result)
                 self.landmarks_data_pixel[self.frame_idx] = landmarks_pixel
                 self.landmarks_data_world[self.frame_idx] = landmarks_world
-        
+                
                 # drawing the landmarks on the image and saving the annotated image to a variable
                 annotated_image = self.draw_landmarks_on_image(frame, detection_result.pose_landmarks)
 
@@ -235,16 +241,33 @@ class Blazepose:
                 print("Paused" if self.paused else "Resumed")
             
             if self.paused:
-                cv2.putText(annotated_image, 'PAUSED', (image_width//2, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                if annotated_image is not None:
+                    paused_frame = annotated_image.copy()
+                    cv2.putText(paused_frame, 'PAUSED', (image_width//2, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                    cv2.imshow('Blazepose Detection', paused_frame)
+
+                # Record pause start once; do not overwrite every loop tick.
+                if pause_time == 0:
+                    pause_time = time.time()
             else:
                 self.frame_idx += 1
-
-
+                frame_processed += 1
+                if pause_time > 0:
+                    pause_time_array.append(time.time() - pause_time)
+                    pause_time = 0
+            
+           
+            
             # Display the resulting frame
-            cv2.imshow('Blazepose Detection', annotated_image)
+            if not self.paused and annotated_image is not None:
+                cv2.imshow('Blazepose Detection', annotated_image)
 
         total_time = time.time() - start_time
-        print(f"Total processing time: {total_time:.2f} seconds and avg fps is :{self.frame_idx/total_time:.2f}")        
+        if pause_time_array:
+            total_time -= sum(pause_time_array)
+        avg_fps = frame_processed/total_time if total_time > 0 else 0.0
+        print(f"Total processing time: {total_time:.2f} seconds and avg fps is :{avg_fps:.2f}")
+
         cap.release()
         if self.video_output:
             output_video.release()

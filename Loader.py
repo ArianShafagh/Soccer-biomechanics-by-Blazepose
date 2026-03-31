@@ -31,3 +31,4 @@ class Loader:
             self.show_biomechanical_data,               #show biomechanical data (default True)
             self.video_output                            #video output (default True)
         )
+    
